@@ -1,3 +1,8 @@
+import Icon from '@/assets/Horário.svg'
+import { Separator } from '@/components/ui/separator'
+
+import { CardUser } from './card-user'
+
 export function AppointmentList() {
   return (
     <>
@@ -10,11 +15,24 @@ export function AppointmentList() {
         </div>
 
         <div className="">
-          <span className="bg-card text-secondary-foreground">
+          <span className="font-medium text-secondary-foreground">
             Atendendimento a seguir
           </span>
 
-          <div className="h-[7rem] w-[40rem]"></div>
+          <CardUser primary={true} />
+
+          <div className="mt-10 flex w-[40rem] flex-col">
+            <span className="font-medium text-secondary-foreground">manhã</span>
+            <Separator orientation="horizontal" className="mt-4 h-[1px]" />
+
+            <div className="mt-11 flex items-center">
+              <div className="mr-5 flex">
+                <img src={Icon} alt="icon" />
+                <span className="ml-2.5 text-secondary-foreground">08:00</span>
+              </div>
+              <CardUser primary={false} />
+            </div>
+          </div>
         </div>
       </div>
     </>
