@@ -3,10 +3,18 @@ import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
 import Calendar from '@/assets/Calendário.svg'
 import Clock from '@/assets/Horário.svg'
 
-export function CardCollaborator() {
+interface PropsType {
+  setStep: React.Dispatch<React.SetStateAction<number>>
+}
+
+export function CardCollaborator(props: PropsType) {
+  const { setStep } = props
   return (
     <>
-      <div className="flex h-[7rem] w-[342px] flex-row items-center rounded-lg border border-muted bg-muted px-4 py-4">
+      <div
+        onClick={() => setStep(2)}
+        className="flex h-[7rem] w-[342px] flex-row items-center rounded-lg border border-muted bg-muted px-4 py-4"
+      >
         <div className="flex flex-row items-center">
           <Avatar className="h-16 w-16">
             <AvatarImage

@@ -1,4 +1,3 @@
-import { type } from 'os'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -10,7 +9,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const signInForm = z.object({
-  email: z.string().email(),
+  cpf: z.string(),
+  password: z.string(),
 })
 
 type SignInForm = z.infer<typeof signInForm>
@@ -68,8 +68,13 @@ export function SignIn() {
 
           <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Seu e-mail</Label>
-              <Input id="email" type="email" {...register('email')} />
+              <Label htmlFor="cpf">Seu cpf</Label>
+              <Input id="cpf" type="cpf" {...register('cpf')} />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="password">Sua senha</Label>
+              <Input id="password" type="password" {...register('password')} />
             </div>
 
             <Button
