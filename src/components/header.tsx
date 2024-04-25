@@ -1,6 +1,5 @@
 import { Cake, Home, UtensilsCrossed, SquareGanttChart, Clock8 } from 'lucide-react';
 import { Separator } from "./ui/separator.tsx";
-import { Link } from 'react-router-dom';
 import { NavLink } from './nav-link.tsx';
 import { ThemeToggle } from './theme/theme-toggle.tsx';
 import { AccountMenu } from './account-menu.tsx';
