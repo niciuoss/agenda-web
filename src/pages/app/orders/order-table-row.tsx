@@ -1,4 +1,4 @@
-import { ArrowRight, Search, X } from 'lucide-react'
+import { Search } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
@@ -34,8 +34,8 @@ export function OrderTableRow() {
         </div>
       </TableCell>
       <TableCell className="font-medium">Thiago Marinho Beserra</TableCell>
-      <TableCell className="font-medium text-center">R$ 14990,99</TableCell>
-      <TableCell className="font-medium text-center">
+      <TableCell className="text-center font-medium">R$ 14990,99</TableCell>
+      <TableCell className="text-center font-medium">
         Cartão de Crédito
       </TableCell>
     </TableRow>

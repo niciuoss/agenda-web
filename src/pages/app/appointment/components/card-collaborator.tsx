@@ -8,10 +8,13 @@ interface PropsType {
 }
 
 export function CardCollaborator(props: PropsType) {
-  const {setStep} = props
+  const { setStep } = props
   return (
     <>
-      <div onClick={() => setStep(2)} className="flex h-[7rem] w-[342px] flex-row items-center rounded-lg border border-muted bg-muted px-4 py-4">
+      <div
+        onClick={() => setStep(2)}
+        className="flex h-[7rem] w-[342px] flex-row items-center rounded-lg border border-muted bg-muted px-4 py-4"
+      >
         <div className="flex flex-row items-center">
           <Avatar className="h-16 w-16">
             <AvatarImage
