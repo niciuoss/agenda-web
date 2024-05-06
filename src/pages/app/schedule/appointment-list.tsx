@@ -8,7 +8,7 @@ export function AppointmentList() {
     <>
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-3">
-          <h1 className="text-[2.25rem] text-foreground">Horários agendados</h1>
+          <h1 className="text-[2.25rem] text-foreground">Horrios agendados</h1>
           <span className="text-[1rem] text-primary">
             Hoje | Dia 06 | Segunda-feira
           </span>
