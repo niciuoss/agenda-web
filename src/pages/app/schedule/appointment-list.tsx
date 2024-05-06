@@ -8,7 +8,7 @@ export function AppointmentList() {
     <>
       <div className="flex flex-col gap-12">
         <div className="flex flex-col gap-3">
-          <h1 className="text-[2.25rem] text-foreground">Horários agendados</h1>
+          <h1 className="text-[2.25rem] text-foreground">Horrios agendados</h1>
           <span className="text-[1rem] text-primary">
             Hoje | Dia 06 | Segunda-feira
           </span>
@@ -25,12 +25,12 @@ export function AppointmentList() {
             <span className="font-medium text-secondary-foreground">manhã</span>
             <Separator orientation="horizontal" className="mt-4 h-[1px]" />
 
-            <div className="mt-11 flex items-center">
+            <div className="mt-11 flex items-center flex-col">
               <div className="mr-5 flex">
-                <img src={Icon} alt="icon" />
-                <span className="ml-2.5 text-secondary-foreground">08:00</span>
               </div>
-              <CardUser primary={false} />
+              {Array.from({ length: 10 }).map((_, i) => {
+                  return <CardUser primary={false} key={i} />
+                })}
             </div>
           </div>
         </div>
