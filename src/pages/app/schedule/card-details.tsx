@@ -39,9 +39,7 @@ export function CardDetails() {
 
             <TableRow>
               <TableCell className="text-muted-foreground">Cliente</TableCell>
-              <TableCell className="flex justify-end">
-                McLovin Tibica
-              </TableCell>
+              <TableCell className="flex justify-end">McLovin Tibica</TableCell>
             </TableRow>
 
             <TableRow>
@@ -51,9 +49,7 @@ export function CardDetails() {
 
             <TableRow>
               <TableCell className="text-muted-foreground">Corte</TableCell>
-              <TableCell className="flex justify-end">
-                Degradê
-              </TableCell>
+              <TableCell className="flex justify-end">Degradê</TableCell>
             </TableRow>
 
             <TableRow>
@@ -74,16 +70,14 @@ export function CardDetails() {
           <TableBody>
             <TableRow>
               <TableCell>
-                <Input type='obs' placeholder='Observação'/>
+                <Input type="obs" placeholder="Observação" />
               </TableCell>
             </TableRow>
           </TableBody>
           <TableFooter>
             <TableRow>
               <TableCell colSpan={3}>Total do pedido</TableCell>
-              <TableCell className="text-right font-medium">
-                R$ 50,00
-              </TableCell>
+              <TableCell className="text-right font-medium">R$ 50,00</TableCell>
             </TableRow>
           </TableFooter>
         </Table>

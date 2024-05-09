@@ -6,7 +6,6 @@ import { Toaster } from 'sonner'
 
 import { ThemeProvider } from './components/theme/theme-provider'
 import { router } from './routes'
-
 export function App() {
   return (
     <HelmetProvider>

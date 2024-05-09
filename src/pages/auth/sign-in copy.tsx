@@ -1,4 +1,3 @@
-import { GoogleLogo } from '@phosphor-icons/react'
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -9,7 +8,6 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
 import { auth } from '@/service/firebase'
 
 const signInForm = z.object({
@@ -99,11 +97,6 @@ export function SignIn() {
               Acessar painel
             </Button>
           </form>
-          <Separator />
-          <Button variant="destructive" onClick={() => handleGoogleSignIn()}>
-            <GoogleLogo size={32} weight="bold" className="mr-2" /> Login com
-            Google
-          </Button>
         </div>
       </div>
     </>

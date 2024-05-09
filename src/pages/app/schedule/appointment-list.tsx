@@ -1,4 +1,3 @@
-import Icon from '@/assets/Horário.svg'
 import { Separator } from '@/components/ui/separator'
 
 import { CardUser } from './card-user'
@@ -25,12 +24,11 @@ export function AppointmentList() {
             <span className="font-medium text-secondary-foreground">manhã</span>
             <Separator orientation="horizontal" className="mt-4 h-[1px]" />
 
-            <div className="mt-11 flex items-center flex-col">
-              <div className="mr-5 flex">
-              </div>
+            <div className="mt-11 flex flex-col items-center">
+              <div className="mr-5 flex"></div>
               {Array.from({ length: 10 }).map((_, i) => {
-                  return <CardUser primary={false} key={i} />
-                })}
+                return <CardUser primary={false} key={i} />
+              })}
             </div>
           </div>
         </div>
