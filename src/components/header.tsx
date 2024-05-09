@@ -1,10 +1,4 @@
-import {
-  Cake,
-  Clock8,
-  Home,
-  SquareGanttChart,
-  UtensilsCrossed,
-} from 'lucide-react'
+import { Cake, Clock8, Home, SquareGanttChart } from 'lucide-react'
 
 import { AccountMenu } from './account-menu.tsx'
 import { NavLink } from './nav-link.tsx'
