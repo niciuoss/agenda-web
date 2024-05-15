@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import * as FirebaseController from '@/service/firebase'
+import { useAuth } from '@/hooks/use-auth'
 
 // const signUpForm = z.object({
 //   restaurantName: z.string(),
@@ -21,6 +22,8 @@ import * as FirebaseController from '@/service/firebase'
 
 export function SignUp() {
 
+  const {signUp} = useAuth()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -28,16 +31,11 @@ export function SignUp() {
 
   const navigate = useNavigate()
 
-  async function buttonSignUp() {
-    setErrorMessage('')
-    try{
-      await FirebaseController.signUp(email, password)
-      setIsAuthenticated(true)
-    } catch (error) {
-      console.error(error)
-      setErrorMessage('error')
-    }
+  function handleSignUp() {
+    signUp(email, password)
   }
+
+
 
   // const {
   //   register,
@@ -111,7 +109,7 @@ export function SignUp() {
               />
             </div>
 
-            <Button onClick={() => buttonSignUp()} className="w-full">
+            <Button onClick={() => handleSignUp()} className="w-full">
               Cadastrar
             </Button>
 

@@ -1,67 +1,36 @@
 import { GoogleLogo } from '@phosphor-icons/react'
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { Helmet } from 'react-helmet-async'
-import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
-import { toast } from 'sonner'
-import { string, z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { useAuth } from '@/hooks/use-auth' 
 import { auth } from '@/service/firebase'
-import * as FirebaseController from '@/service/firebase'
-
-
-// const signInForm = z.object({
-//   email: z.string(),
-//   password: z.string(),
-// })
-// type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
+
+  const {signIn, signInWithGoogle} = useAuth()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { isSubmitting },
-  // } = useForm<SignInForm>()
 
-  async function buttonSignIn() {
-    setErrorMessage('')
-    try{
-      await FirebaseController.signIn(email, password)
-      setIsAuthenticated(true)
-    } catch (error) {
-      console.error(error)
-      setErrorMessage('error')
-    }
+  function handleSignIn() {
+    signIn(email, password)
   }
 
-  async function buttonReset() {
-    setErrorMessage('')
-    try{
-      await FirebaseController.resetPassword(email)
-    } catch (error) {
-      console.error(error)
-      setErrorMessage('error')
-    }
-  }
-
-  async function handleGoogleSignIn() {
-    const provider = new GoogleAuthProvider()
-
-    signInWithPopup(auth, provider).then((result) => {
-      console.log('result', result)
-    })
-  }
+  // export function signIn(email: string, password: string){
+  //   return FirebaseAuth.signInWithEmailAndPassword(
+  //     FirebaseAuth.getAuth(),
+  //     email,
+  //     password
+  //   )
+  // }
 
   return (
     <>
@@ -81,7 +50,7 @@ export function SignIn() {
             </p>
           </div>
 
-          <form className="space-y-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Seu email</Label>
               <Input id="email" type="email"/>
@@ -96,21 +65,21 @@ export function SignIn() {
 
             <Button
               // disabled={isSubmitting}
-              onClick={() => buttonSignIn()}
+              onClick={() => handleSignIn()}
               className="w-full"
               type="submit"
             >
               Acessar painel
             </Button>
-          </form>
+          </div>
           <Separator />
-          <Button variant="destructive" onClick={() => handleGoogleSignIn()}>
+          <Button variant="destructive" onClick={() => signInWithGoogle()}>
             <GoogleLogo size={32} weight="bold" className="mr-2" /> Login com
             Google
           </Button>
 
           <div className='text-sm text-right text-muted-foreground'>
-            <a onClick={() => buttonReset()}>esqueceu a senha?</a>
+            <a>esqueceu a senha?</a>
           </div>
         </div>
       </div>
