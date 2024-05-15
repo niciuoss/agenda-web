@@ -1,13 +1,41 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+// import * as FirebaseApp from 'firebase/app'
+import * as FirebaseAuth from 'firebase/auth'
+
+
 const firebaseConfig = {
-  apiKey: 'AIzaSyAVnRy_bYfmpYjZDAqmUyYR-rdg0QnxN70',
-  authDomain: 'agenda-e8314.firebaseapp.com',
-  projectId: 'agenda-e8314',
-  storageBucket: 'agenda-e8314.appspot.com',
-  messagingSenderId: '608053365273',
-  appId: '1:608053365273:web:ff65d11a902b1a5a70b888',
-  measurementId: 'G-XM6ZHNPNN9',
+  apiKey: process.env.REACT_APP_apiKey,
+  authDomain: process.env.REACT_APP_authDomain,
+  projectId: process.env.REACT_APP_projectId,
+  storageBucket: process.env.REACT_APP_storageBucket,
+  messagingSenderId: process.env.REACT_APP_messagingSenderId,
+  appId: process.env.REACT_APP_appId,
 }
+
 const app = initializeApp(firebaseConfig)
+
+export function signIn(email: string, password: string){
+  return FirebaseAuth.signInWithEmailAndPassword(
+    FirebaseAuth.getAuth(),
+    email,
+    password
+  )
+}
+
+export function signUp(email: string, password: string){
+  return FirebaseAuth.createUserWithEmailAndPassword(
+    FirebaseAuth.getAuth(),
+    email,
+    password
+  )
+}
+
+export function resetPassword(email: string){
+  return FirebaseAuth.sendPasswordResetEmail(
+    FirebaseAuth.getAuth(),
+    email
+  )
+}
+
 export const auth = getAuth(app)

@@ -2,44 +2,63 @@ import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
+import { useState } from 'react'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import * as FirebaseController from '@/service/firebase'
 
-const signUpForm = z.object({
-  restaurantName: z.string(),
-  managerName: z.string(),
-  phone: z.string(),
-  email: z.string().email(),
-})
+// const signUpForm = z.object({
+//   restaurantName: z.string(),
+//   managerName: z.string(),
+//   phone: z.string(),
+//   email: z.string().email(),
+// })
 
-type SignUpForm = z.infer<typeof signUpForm>
+// type SignUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
   const navigate = useNavigate()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignUpForm>()
-
-  async function handleSignUp(data: SignUpForm) {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      toast.success('Restaurante cadastrado com sucesso.', {
-        action: {
-          label: 'Login',
-          onClick: () => navigate('/sign-in'),
-        },
-      })
-    } catch {
-      toast.error('Erro ao cadastrar restaurante.')
+  async function buttonSignUp() {
+    setErrorMessage('')
+    try{
+      await FirebaseController.signUp(email, password)
+      setIsAuthenticated(true)
+    } catch (error) {
+      console.error(error)
+      setErrorMessage('error')
     }
   }
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { isSubmitting },
+  // } = useForm<SignUpForm>()
+
+  // async function handleSignUp(data: SignUpForm) {
+  //   try {
+  //     await new Promise((resolve) => setTimeout(resolve, 2000))
+
+  //     toast.success('Restaurante cadastrado com sucesso.', {
+  //       action: {
+  //         label: 'Login',
+  //         onClick: () => navigate('/sign-in'),
+  //       },
+  //     })
+  //   } catch {
+  //     toast.error('Erro ao cadastrar restaurante.')
+  //   }
+  // }
 
   return (
     <>
@@ -58,13 +77,11 @@ export function SignUp() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(handleSignUp)} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="restaurantName">Nome do estabelecimento</Label>
               <Input
                 id="restaurantName"
                 type="text"
-                {...register('restaurantName')}
               />
             </div>
 
@@ -73,22 +90,29 @@ export function SignUp() {
               <Input
                 id="managerName"
                 type="text"
-                {...register('managerName')}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="email">Seu e-mail</Label>
-              <Input id="email" type="email" {...register('email')} />
+              <Input 
+                id="email" 
+                type="email" 
+                onChange={event => setEmail(event.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Seu celular</Label>
-              <Input id="phone" type="tel" {...register('phone')} />
+              <Label htmlFor="password">Sua senha</Label>
+              <Input 
+                id="password" 
+                type="password"
+                onChange={event => setPassword(event.target.value)}
+              />
             </div>
 
-            <Button disabled={isSubmitting} className="w-full" type="submit">
-              Começar cadastro
+            <Button onClick={() => buttonSignUp()} className="w-full">
+              Cadastrar
             </Button>
 
             <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
@@ -101,7 +125,6 @@ export function SignUp() {
                 políticas de privacidade.
               </a>
             </p>
-          </form>
         </div>
       </div>
     </>
