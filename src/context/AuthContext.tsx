@@ -1,115 +1,93 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { auth, app } from "../service/firebase";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import * as FirebaseAuth from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import * as FirebaseAuth from 'firebase/auth'
+import { createContext, ReactNode, useState } from 'react'
 
+import { app, auth } from '../service/firebase'
 
 type User = {
-  id: string;
-  name: string;
-  avatar: string;
+  id: string
+  name: string
+  avatar: string
 }
 
 type AuthContextType = {
-  user: User | undefined;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
+  user: User | undefined
+  signInWithGoogle: () => Promise<void>
+  signOut: () => Promise<void>
+  resetPassword: (email: string) => Promise<void>
+  signUp: (email: string, password: string) => Promise<void>
+  signIn: (
+    email: string,
+    password: string,
+  ) => Promise<FirebaseAuth.UserCredential>
 }
 
 type AuthContextProviderProps = {
-  children: ReactNode;
+  children: ReactNode
 }
 
-export const AuthContext = createContext({} as AuthContextType);
+export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<User>()
 
+  async function signInWithGoogle() {
+    const provider = new GoogleAuthProvider()
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        const { displayName, photoURL, uid } = user
+    signInWithPopup(auth, provider).then((result) => {
+      console.log('🚀 ~ signInWithPopup ~ result:', result)
+
+      if (result.user) {
+        const { displayName, photoURL, uid } = result.user
 
         if (!displayName || !photoURL) {
-          throw new Error('Missing information from Google Account.');
+          throw new Error('Missing information from Google Account.')
         }
 
         setUser({
           id: uid,
           name: displayName,
-          avatar: photoURL
+          avatar: photoURL,
         })
+        return result
       }
     })
-
-    return () => {
-      unsubscribe();
-    }
-  }, [])
-
-  async function signInWithGoogle() {
-    const provider = new GoogleAuthProvider()
-
-    const result: any = await signInWithPopup(auth, provider).then((result) => {
-      console.log('result', result)
-    })
-
-    // if (result.user) {
-    //   const { displayName, photoURL, uid } = result.user
-
-    //   if (!displayName || !photoURL) {
-    //     throw new Error('Missing information from Google Account.');
-    //   }
-
-      // setUser({
-      //   id: uid,
-      //   name: displayName,
-      //   avatar: photoURL
-      // })
-      //}
   }
 
-  async function signIn(email: string, password: string){
-    FirebaseAuth.signInWithEmailAndPassword(
+  async function signIn(email: string, password: string) {
+    const result = await FirebaseAuth.signInWithEmailAndPassword(
       FirebaseAuth.getAuth(app),
       email,
-      password
+      password,
     )
-      console.log('result')
+
+    return result
   }
 
-  async function signUp(email: string, password: string){
+  async function signUp(email: string, password: string) {
     FirebaseAuth.createUserWithEmailAndPassword(
       FirebaseAuth.getAuth(),
       email,
-      password
+      password,
     ).then((result) => {
       console.log('result', result)
-      
     })
   }
-  
-  async function resetPassword(email: string){
-    FirebaseAuth.sendPasswordResetEmail(
-      FirebaseAuth.getAuth(),
-      email
-    )
+
+  async function resetPassword(email: string) {
+    FirebaseAuth.sendPasswordResetEmail(FirebaseAuth.getAuth(), email)
   }
-  
-  async function signOut(){
+
+  async function signOut() {
     setUser(undefined)
-    FirebaseAuth.signOut(
-      FirebaseAuth.getAuth()
-    )
+    FirebaseAuth.signOut(FirebaseAuth.getAuth())
   }
 
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle, signIn, signUp, resetPassword, signOut }}>
+    <AuthContext.Provider
+      value={{ user, signInWithGoogle, signIn, signUp, resetPassword, signOut }}
+    >
       {props.children}
     </AuthContext.Provider>
-  );
+  )
 }

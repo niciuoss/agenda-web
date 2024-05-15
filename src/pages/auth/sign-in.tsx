@@ -1,36 +1,27 @@
 import { GoogleLogo } from '@phosphor-icons/react'
-import { Helmet } from 'react-helmet-async'
-import { Link } from 'react-router-dom'
 import { useState } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { useAuth } from '@/hooks/use-auth' 
-import { auth } from '@/service/firebase'
+import { useAuth } from '@/hooks/use-auth'
 
 export function SignIn() {
-
-  const {signIn, signInWithGoogle} = useAuth()
+  const { signIn, signInWithGoogle } = useAuth()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
 
-
-  function handleSignIn() {
-    signIn(email, password)
+  async function handleSignIn() {
+    const result = await signIn(email, password)
+    if (result.user) {
+      navigate('/')
+    }
   }
-
-  // export function signIn(email: string, password: string){
-  //   return FirebaseAuth.signInWithEmailAndPassword(
-  //     FirebaseAuth.getAuth(),
-  //     email,
-  //     password
-  //   )
-  // }
 
   return (
     <>
@@ -53,18 +44,23 @@ export function SignIn() {
           <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Seu email</Label>
-              <Input id="email" type="email"/>
-              {/* <Input id="email" type="email" {...register('email')} /> */}
+              <Input
+                id="email"
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Sua senha</Label>
-              <Input id="password" type="password"/>
-              {/* <Input id="password" type="password" {...register('password')} /> */}
+              <Input
+                id="password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
 
             <Button
-              // disabled={isSubmitting}
               onClick={() => handleSignIn()}
               className="w-full"
               type="submit"
@@ -78,7 +74,7 @@ export function SignIn() {
             Google
           </Button>
 
-          <div className='text-sm text-right text-muted-foreground'>
+          <div className="text-right text-sm text-muted-foreground">
             <a>esqueceu a senha?</a>
           </div>
         </div>
