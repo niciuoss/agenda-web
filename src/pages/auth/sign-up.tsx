@@ -11,11 +11,13 @@ export function SignUp() {
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
+  const [displaName, setDisplaName] = useState('')
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   function handleSignUp() {
-    signUp(email, password)
+    signUp(displaName, email, password)
     navigate('/sign-in')
   }
 
@@ -37,13 +39,12 @@ export function SignUp() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="restaurantName">Nome do estabelecimento</Label>
-            <Input id="restaurantName" type="text" />
-          </div>
-
-          <div className="space-y-2">
             <Label htmlFor="managerName">Seu nome</Label>
-            <Input id="managerName" type="text" />
+            <Input
+              id="managerName"
+              type="text"
+              onChange={(e) => setDisplaName(e.target.value)}
+            />
           </div>
 
           <div className="space-y-2">

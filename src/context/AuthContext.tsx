@@ -1,4 +1,8 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  updateProfile,
+} from 'firebase/auth'
 import * as FirebaseAuth from 'firebase/auth'
 import { createContext, ReactNode, useState } from 'react'
 
@@ -15,7 +19,11 @@ type AuthContextType = {
   signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
-  signUp: (email: string, password: string) => Promise<void>
+  signUp: (
+    displayName: string,
+    email: string,
+    password: string,
+  ) => Promise<void>
   signIn: (
     email: string,
     password: string,
@@ -60,17 +68,21 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       email,
       password,
     )
+    console.log('🚀 ~ signIn ~ result:', result)
 
     return result
   }
 
-  async function signUp(email: string, password: string) {
+  async function signUp(displayName: string, email: string, password: string) {
     FirebaseAuth.createUserWithEmailAndPassword(
       FirebaseAuth.getAuth(),
       email,
       password,
-    ).then((result) => {
-      console.log('result', result)
+    ).then(async (resp) => {
+      const res = await updateProfile(resp.user, {
+        displayName,
+      })
+      console.log('🚀 ~ ).then ~ res:', res)
     })
   }
 
