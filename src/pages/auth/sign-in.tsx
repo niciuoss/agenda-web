@@ -3,28 +3,57 @@ import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import { toast } from 'sonner'
-import { z } from 'zod'
+import { string, z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { auth } from '@/service/firebase'
+import * as FirebaseController from '@/service/firebase'
 
-const signInForm = z.object({
-  cpf: z.string(),
-  password: z.string(),
-})
 
-type SignInForm = z.infer<typeof signInForm>
+// const signInForm = z.object({
+//   email: z.string(),
+//   password: z.string(),
+// })
+// type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SignInForm>()
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
+
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   formState: { isSubmitting },
+  // } = useForm<SignInForm>()
+
+  async function buttonSignIn() {
+    setErrorMessage('')
+    try{
+      await FirebaseController.signIn(email, password)
+      setIsAuthenticated(true)
+    } catch (error) {
+      console.error(error)
+      setErrorMessage('error')
+    }
+  }
+
+  async function buttonReset() {
+    setErrorMessage('')
+    try{
+      await FirebaseController.resetPassword(email)
+    } catch (error) {
+      console.error(error)
+      setErrorMessage('error')
+    }
+  }
 
   async function handleGoogleSignIn() {
     const provider = new GoogleAuthProvider()
@@ -33,33 +62,6 @@ export function SignIn() {
       console.log('result', result)
     })
   }
-
-  async function handleSignIn(data: SignInForm) {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-
-      toast.success('Enviamos um link de autenticação para seu email.', {
-        action: {
-          label: 'Reenviar',
-          onClick: () => handleSignIn(data),
-        },
-      })
-    } catch {
-      toast.error('Erro ao fazer login.')
-    }
-  }
-
-  // function whatsapp() {
-  //   fetch('https://graph.facebook.com/v18.0/229084290284887/messages', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization:
-  //         'Bearer EAAZAjdvm6Bn8BO7vZBnPhwmfMY3bMZCdkNPFj9jpSvbwxUpabRYnZAJMDNrxbvgisQFdOdHiKKV9ydEGZCNbKF6LVKXv2AHwfJCJQprd3D3E0WDyRXXuxQkYUvcUK5CEc5oZB9JrDyRY6PEedjBTxqTPYI47053mnDDkdHuSAKfwxU1Cwf2nFK8i67jCx9S0MsVeoRE3Hk2ngxMe6aSAwZD',
-  //     },
-  //     body: '{ "messaging_product": "whatsapp", "to": "5585992004669", "type": "template", "template": { "name": "hello_world", "language": { "code": "en_US" } } }',
-  //   })
-  // }
 
   return (
     <>
@@ -79,20 +81,22 @@ export function SignIn() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(handleSignIn)} className="space-y-4">
+          <form className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="cpf">Seu cpf</Label>
-              <Input id="cpf" type="cpf" {...register('cpf')} />
+              <Label htmlFor="email">Seu email</Label>
+              <Input id="email" type="email"/>
+              {/* <Input id="email" type="email" {...register('email')} /> */}
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Sua senha</Label>
-              <Input id="password" type="password" {...register('password')} />
+              <Input id="password" type="password"/>
+              {/* <Input id="password" type="password" {...register('password')} /> */}
             </div>
 
             <Button
-              disabled={isSubmitting}
-              onClick={() => handleGoogleSignIn()}
+              // disabled={isSubmitting}
+              onClick={() => buttonSignIn()}
               className="w-full"
               type="submit"
             >
@@ -104,6 +108,10 @@ export function SignIn() {
             <GoogleLogo size={32} weight="bold" className="mr-2" /> Login com
             Google
           </Button>
+
+          <div className='text-sm text-right text-muted-foreground'>
+            <a onClick={() => buttonReset()}>esqueceu a senha?</a>
+          </div>
         </div>
       </div>
     </>
