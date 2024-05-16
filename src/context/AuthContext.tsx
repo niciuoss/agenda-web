@@ -12,8 +12,14 @@ type CreateUserType = {
   role: string
 }
 
+type CurrenteUser = {
+  displayName: string | null
+  email: string | null
+  role?: string
+}
+
 type AuthContextType = {
-  user: FirebaseAuth.User | null
+  user: CurrenteUser | null
   signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
@@ -31,12 +37,17 @@ type AuthContextProviderProps = {
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
-  const [user, setUser] = useState<FirebaseAuth.User | null>(null)
+  const [user, setUser] = useState<CurrenteUser | null>(null)
+  console.log('🚀 ~ AuthContextProvider ~ user:', user)
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
-        setUser(authUser)
+        const data = {
+          displayName: authUser.displayName,
+          email: authUser.email,
+        }
+        setUser(data)
       } else {
         setUser(null)
       }
@@ -67,11 +78,22 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       email,
       password,
     )
+    console.log('🚀 ~ signIn ~ result:', result)
     const { uid } = result.user
     const db = ref(getDatabase(app))
-    await get(child(db, `users/${uid}`)).then((resp) =>
-      console.log('🚀 ~ signIn ~ userDB:', resp.val()),
-    )
+    get(child(db, `users/${uid}`))
+      .then((resp) => {
+        console.log('🚀 ~ signIn ~ userDB:', resp.val())
+        const data = {
+          displayName: resp.val()[uid].username,
+          email: resp.val()[uid].email,
+          role: resp.val()[uid].role,
+        }
+        setUser(data)
+      })
+      .catch((err) => {
+        console.log('🚀 ~ signIn ~ err:', err)
+      })
 
     return result
   }
@@ -95,7 +117,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         username: displayName,
         email,
         role,
-      })
+      }).then((resp) => console.log('🚀 ~ user:', resp))
     } catch (error) {
       console.log('🚀 ~ AuthContextProvider ~ error:', error)
     }
