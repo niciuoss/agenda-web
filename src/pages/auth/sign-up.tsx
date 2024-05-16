@@ -11,14 +11,14 @@ export function SignUp() {
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
-  const [displaName, setDisplaName] = useState('')
+  const [displaName, setDisplayName] = useState('')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   function handleSignUp() {
     signUp(displaName, email, password)
-    navigate('/sign-in')
+    // navigate('/sign-in')
   }
 
   return (
@@ -43,7 +43,7 @@ export function SignUp() {
             <Input
               id="managerName"
               type="text"
-              onChange={(e) => setDisplaName(e.target.value)}
+              onChange={(e) => setDisplayName(e.target.value)}
             />
           </div>
 
@@ -68,6 +68,7 @@ export function SignUp() {
           <Button onClick={() => handleSignUp()} className="w-full">
             Cadastrar
           </Button>
+          
 
           <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
             Ao continuar, você conconrdar com nossos{' '}
