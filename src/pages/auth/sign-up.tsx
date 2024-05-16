@@ -11,14 +11,14 @@ export function SignUp() {
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
-  const [displaName, setDisplayName] = useState('')
+  const [displayName, setDisplayName] = useState('')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   function handleSignUp() {
-    signUp(displaName, email, password)
-    // navigate('/sign-in')
+    signUp({ displayName, email, password, role: 'admin' })
+    navigate('/sign-in')
   }
 
   return (
@@ -69,7 +69,6 @@ export function SignUp() {
             <Button onClick={() => handleSignUp()} className="w-full">
               Cadastrar
             </Button>
-            
 
             <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
               Ao continuar, você conconrdar com nossos{' '}

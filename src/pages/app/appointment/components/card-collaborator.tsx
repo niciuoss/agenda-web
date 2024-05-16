@@ -5,10 +5,11 @@ import Clock from '@/assets/Horário.svg'
 
 interface PropsType {
   setStep: React.Dispatch<React.SetStateAction<number>>
+  collaborator: string
 }
 
 export function CardCollaborator(props: PropsType) {
-  const { setStep } = props
+  const { setStep, collaborator } = props
   return (
     <>
       <div
@@ -26,7 +27,7 @@ export function CardCollaborator(props: PropsType) {
         </div>
 
         <div className="ml-5 flex flex-col">
-          <p className="text-lg text-foreground">Tibika McLovin</p>
+          <p className="text-lg text-foreground">{collaborator}</p>
           <div className="mt-3 flex flex-row">
             <img src={Calendar} alt="icon" className="w-[0.875rem]" />
             <span className="ml-2.5 text-secondary-foreground ">

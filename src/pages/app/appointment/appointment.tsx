@@ -1,7 +1,5 @@
-import { ArrowLeft } from 'lucide-react'
 import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { NavLink } from 'react-router-dom'
 
 import { Collaborators } from './collaborators'
 import { ScheduleCollaborators } from './schedule-collaborators'
@@ -11,9 +9,6 @@ export function Appointment() {
   return (
     <>
       <Helmet title="Agendamentos" />
-      <NavLink to="/orders">
-        <ArrowLeft />
-      </NavLink>
       {step === 1 && <Collaborators setStep={setstep} />}
       {step === 2 && <ScheduleCollaborators />}
     </>

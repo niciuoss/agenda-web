@@ -4,12 +4,8 @@ import { AccountMenu } from './account-menu.tsx'
 import { NavLink } from './nav-link.tsx'
 import { ThemeToggle } from './theme/theme-toggle.tsx'
 import { Separator } from './ui/separator.tsx'
-import { useAuth } from '@/hooks/use-auth'
 
 export function Header() {
-
-  
-
   return (
     <div className="border-b">
       <div className="flex h-16 items-center gap-6 px-6">
@@ -34,7 +30,6 @@ export function Header() {
         <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
           <AccountMenu />
-          
         </div>
       </div>
     </div>

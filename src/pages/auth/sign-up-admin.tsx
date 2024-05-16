@@ -54,7 +54,7 @@ export function SignUpAdmin() {
               <Input
                 id="address"
                 type="text"
-                placeholder='Rua nº, bairro, cidade - estado'
+                placeholder="Rua nº, bairro, cidade - estado"
                 onChange={(e) => setEndereco(e.target.value)}
               />
             </div>
@@ -80,7 +80,7 @@ export function SignUpAdmin() {
             <Button onClick={() => handleSignUp()} className="w-full">
               Cadastrar
             </Button>
-            
+
             <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
               Ao continuar, você conconrdar com nossos{' '}
               <a className="underline underline-offset-4" href="">
