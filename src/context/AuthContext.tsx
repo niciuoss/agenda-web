@@ -1,6 +1,6 @@
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import * as FirebaseAuth from 'firebase/auth'
-import { getDatabase, push, ref } from 'firebase/database'
+import { child, get, getDatabase, push, ref } from 'firebase/database'
 import { createContext, ReactNode, useEffect, useState } from 'react'
 
 import { app, auth } from '../service/firebase'
@@ -34,8 +34,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = useState<FirebaseAuth.User | null>(null)
 
   useEffect(() => {
-    console.log(user)
-
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       if (authUser) {
         setUser(authUser)
@@ -68,6 +66,11 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       FirebaseAuth.getAuth(app),
       email,
       password,
+    )
+    const { uid } = result.user
+    const db = ref(getDatabase(app))
+    await get(child(db, `users/${uid}`)).then((resp) =>
+      console.log('🚀 ~ signIn ~ userDB:', resp.val()),
     )
 
     return result
