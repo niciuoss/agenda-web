@@ -1,29 +1,23 @@
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  updateProfile,
-} from 'firebase/auth'
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import * as FirebaseAuth from 'firebase/auth'
-import { createContext, ReactNode, useState } from 'react'
+import { getDatabase, push, ref } from 'firebase/database'
+import { createContext, ReactNode, useEffect, useState } from 'react'
 
 import { app, auth } from '../service/firebase'
 
-type User = {
-  id: string
-  name: string
-  avatar: string
+type CreateUserType = {
+  displayName: string
+  email: string
+  password: string
+  role: string
 }
 
 type AuthContextType = {
-  user: User | undefined
+  user: FirebaseAuth.User | null
   signInWithGoogle: () => Promise<void>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<void>
-  signUp: (
-    displayName: string,
-    email: string,
-    password: string,
-  ) => Promise<void>
+  signUp: (data: CreateUserType) => Promise<void>
   signIn: (
     email: string,
     password: string,
@@ -37,26 +31,33 @@ type AuthContextProviderProps = {
 export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<FirebaseAuth.User | null>(null)
+
+  useEffect(() => {
+    console.log(user)
+
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        setUser(authUser)
+      } else {
+        setUser(null)
+      }
+    })
+    return () => unsubscribe()
+  }, [])
 
   async function signInWithGoogle() {
     const provider = new GoogleAuthProvider()
 
     signInWithPopup(auth, provider).then((result) => {
-      console.log('🚀 ~ signInWithPopup ~ result:', result)
-
       if (result.user) {
-        const { displayName, photoURL, uid } = result.user
+        const { displayName, photoURL } = result.user
 
         if (!displayName || !photoURL) {
           throw new Error('Missing information from Google Account.')
         }
 
-        setUser({
-          id: uid,
-          name: displayName,
-          avatar: photoURL,
-        })
+        setUser(result.user)
         return result
       }
     })
@@ -68,22 +69,33 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       email,
       password,
     )
-    console.log('🚀 ~ signIn ~ result:', result)
 
     return result
   }
 
-  async function signUp(displayName: string, email: string, password: string) {
-    FirebaseAuth.createUserWithEmailAndPassword(
-      FirebaseAuth.getAuth(),
-      email,
-      password,
-    ).then(async (resp) => {
-      const res = await updateProfile(resp.user, {
-        displayName,
+  async function signUp({
+    displayName,
+    email,
+    password,
+    role = 'admin',
+  }: CreateUserType) {
+    try {
+      const result = await FirebaseAuth.createUserWithEmailAndPassword(
+        FirebaseAuth.getAuth(),
+        email,
+        password,
+      )
+      const { uid } = result.user
+
+      const db = getDatabase(app)
+      await push(ref(db, 'users/' + uid), {
+        username: displayName,
+        email,
+        role,
       })
-      console.log('🚀 ~ ).then ~ res:', res)
-    })
+    } catch (error) {
+      console.log('🚀 ~ AuthContextProvider ~ error:', error)
+    }
   }
 
   async function resetPassword(email: string) {
@@ -91,7 +103,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
 
   async function signOut() {
-    setUser(undefined)
+    setUser(null)
     FirebaseAuth.signOut(FirebaseAuth.getAuth())
   }
 

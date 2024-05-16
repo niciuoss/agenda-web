@@ -11,13 +11,13 @@ export function SignUp() {
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
-  const [displaName, setDisplaName] = useState('')
+  const [displayName, setDisplayName] = useState('')
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   function handleSignUp() {
-    signUp(displaName, email, password)
+    signUp({ displayName, email, password, role: 'admin' })
     navigate('/sign-in')
   }
 
@@ -43,7 +43,7 @@ export function SignUp() {
             <Input
               id="managerName"
               type="text"
-              onChange={(e) => setDisplaName(e.target.value)}
+              onChange={(e) => setDisplayName(e.target.value)}
             />
           </div>
 
