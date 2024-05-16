@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/use-auth'
 
-export function SignUp() {
+export function SignUpAdmin() {
   const { signUp } = useAuth()
   const navigate = useNavigate()
 
@@ -15,6 +15,7 @@ export function SignUp() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [endereco, setEndereco] = useState('')
 
   function handleSignUp() {
     signUp(displaName, email, password)
@@ -40,11 +41,21 @@ export function SignUp() {
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="managerName">Seu nome</Label>
+              <Label htmlFor="managerName">Nome da empresa</Label>
               <Input
                 id="managerName"
                 type="text"
                 onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label>Seu endereço</Label>
+              <Input
+                id="address"
+                type="text"
+                placeholder='Rua nº, bairro, cidade - estado'
+                onChange={(e) => setEndereco(e.target.value)}
               />
             </div>
 
@@ -70,7 +81,6 @@ export function SignUp() {
               Cadastrar
             </Button>
             
-
             <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
               Ao continuar, você conconrdar com nossos{' '}
               <a className="underline underline-offset-4" href="">

@@ -75,7 +75,11 @@ export function SignIn() {
           </Button>
 
           <div className="text-right text-sm text-muted-foreground">
-            <a>esqueceu a senha?</a>
+            <a href="" >esqueceu a senha?</a>
+          </div>
+          <Separator/>
+          <div className="text-sm text-muted-foreground text-center">
+            Deseja trabalhar conosco? <a className='text-sky-500' href="/sign-up-admin"> Clique aqui </a> e venha fazer parte da nossa equipe.
           </div>
         </div>
       </div>

@@ -1,7 +1,15 @@
 import { useState } from 'react'
+import { format } from "date-fns"
 
 import { Button } from '@/components/ui/button'
+import { Calendar as CalendarIcon } from "lucide-react"
 import { Calendar } from '@/components/ui/calendar'
+import { cn } from "@/lib/utils"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 import { CarouselCollaborators } from './components/carousel-collaborators'
 
@@ -16,12 +24,28 @@ export function ScheduleCollaborators() {
           Escolha a data
         </h1>
         <div className="flex w-full justify-center">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="w-[278px] rounded-md border"
-          />
+        <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "w-[280px] justify-start text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date ? format(date, "PPP") : <span>Pick a date</span>}
+            </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={setDate}
+              className="w-[278px] rounded-md border"
+            />
+          </PopoverContent>
+        </Popover>
         </div>
         <h1 className="mt-4 text-2xl font-bold text-foreground">
           Escolha o horário
