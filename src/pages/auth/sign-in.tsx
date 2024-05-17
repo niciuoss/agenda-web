@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useAuth } from '@/hooks/use-auth'
 
 export function SignIn() {
@@ -15,11 +16,12 @@ export function SignIn() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [typeUser, setTypeUser] = useState('client')
 
   async function handleSignIn() {
-    const result = await signIn(email, password)
+    const result = await signIn(email, password, typeUser)
     if (result.user) {
-      navigate('/')
+      navigate(typeUser === 'client' ? '/appointment' : '/')
     }
   }
 
@@ -31,7 +33,7 @@ export function SignIn() {
         <Button variant="ghost" asChild className="absolute right-8 top-8">
           <Link to="/sign-up">Novo estabelecimento</Link>
         </Button>
-        <div className="flex w-[350px] flex-col justify-center gap-6">
+        <div className="flex w-[21.875rem] flex-col justify-center gap-6">
           <div className="flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
               Acessar painel
@@ -58,6 +60,24 @@ export function SignIn() {
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+            <div className="space-y-2">
+              <Tabs defaultValue="client" className="w-[21.875rem]">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger
+                    value="client"
+                    onClick={() => setTypeUser('client')}
+                  >
+                    Cliente
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="admin"
+                    onClick={() => setTypeUser('admin')}
+                  >
+                    Administrador
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
             </div>
 
             <Button

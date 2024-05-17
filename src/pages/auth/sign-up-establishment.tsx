@@ -7,19 +7,18 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/use-auth'
 
-export function SignUpAdmin() {
-  const { signUp } = useAuth()
+export function SignUpEstablishment() {
+  const { signUpAdmin } = useAuth()
   const navigate = useNavigate()
 
-  const [displaName, setDisplayName] = useState('')
-
+  const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [endereco, setEndereco] = useState('')
+  const [address, setAddress] = useState('')
 
   function handleSignUp() {
-    signUp(displaName, email, password)
-    // navigate('/sign-in')
+    signUpAdmin({ displayName, email, password, address })
+    navigate('/sign-in')
   }
 
   return (
@@ -55,7 +54,7 @@ export function SignUpAdmin() {
                 id="address"
                 type="text"
                 placeholder="Rua nº, bairro, cidade - estado"
-                onChange={(e) => setEndereco(e.target.value)}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </div>
 

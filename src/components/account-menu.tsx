@@ -16,9 +16,7 @@ import {
 export function AccountMenu() {
   const { signOut } = useAuth()
   const navigate = useNavigate()
-  // const { user } = props
   const { user } = useAuth()
-  console.log(user)
 
   async function handleSignOut() {
     signOut()

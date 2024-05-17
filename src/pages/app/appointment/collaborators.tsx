@@ -1,6 +1,7 @@
 import { child, get, getDatabase, ref } from 'firebase/database'
 import { useEffect, useState } from 'react'
 
+import { useAuth } from '@/hooks/use-auth'
 import { app } from '@/service/firebase'
 
 import { CardCollaborator } from './components/card-collaborator'
@@ -17,10 +18,14 @@ export function Collaborators(props: PropsType) {
   const { setStep } = props
   const [data, setData] = useState([])
 
+  const { user } = useAuth()
+
   const db = ref(getDatabase(app))
 
   async function getCollaborators() {
-    const result = await get(child(db, '/collaborators'))
+    const result = await get(
+      child(db, 'establishments/' + user?.uid + '/collaborators'),
+    )
     if (result.exists()) {
       setData(result.val())
     }
