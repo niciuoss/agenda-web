@@ -3,13 +3,12 @@ import { getAuth } from 'firebase/auth'
 import { getDatabase } from 'firebase/database'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAVnRy_bYfmpYjZDAqmUyYR-rdg0QnxN70',
-  authDomain: 'agenda-e8314.firebaseapp.com',
-  databaseURL: 'https://agenda-e8314-default-rtdb.firebaseio.com',
-  projectId: 'agenda-e8314',
-  messagingSenderId: '608053365273',
-  appId: '1:608053365273:web:ff65d11a902b1a5a70b888',
-  measurementId: 'G-XM6ZHNPNN9',
+  apiKey: "AIzaSyClle_5VZwpSmyqAyvk9YQj7D719fC_ba8",
+  authDomain: "barbearia-429f7.firebaseapp.com",
+  projectId: "barbearia-429f7",
+  storageBucket: "barbearia-429f7.appspot.com",
+  messagingSenderId: "1010822759918",
+  appId: "1:1010822759918:web:847ddf7c95ee4f3409faff"
 }
 
 const app = initializeApp(firebaseConfig)

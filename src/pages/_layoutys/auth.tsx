@@ -1,4 +1,4 @@
-import { Cake } from 'lucide-react'
+import { Scissors } from 'lucide-react'
 import { Outlet } from 'react-router-dom'
 
 export function AuthLayout() {
@@ -6,11 +6,11 @@ export function AuthLayout() {
     <div className="grid min-h-screen grid-cols-2 antialiased">
       <div className="flex h-full flex-col justify-between border-r border-foreground/5 bg-muted p-10 text-muted-foreground">
         <div className="flex items-center gap-3 text-lg text-foreground">
-          <Cake className="h-5 w-5" />
-          <span className="font-semibold">cake.shop</span>
+          <Scissors className="h-5 w-5" />
+          <span className="font-semibold">barber.shop</span>
         </div>
         <footer className="text-sm">
-          Painel do parceiro &copy; cake.shop - {new Date().getFullYear()}
+          Painel do parceiro &copy; barber.shop - {new Date().getFullYear()}
         </footer>
       </div>
 

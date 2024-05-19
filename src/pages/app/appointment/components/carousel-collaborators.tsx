@@ -10,11 +10,11 @@ export function CarouselCollaborators() {
   return (
     <>
       <Carousel className="w-full" opts={{ dragFree: true }}>
-        <CarouselContent className="-ml-1">
+        <CarouselContent>
           {Array.from({ length: 5 }).map((_, index) => (
             <CarouselItem
               key={index}
-              className="h-12 w-[10.9375rem] basis-3/5 md:basis-1/6"
+              className="h-[12] w-[10.9375rem] basis-2/4 md:basis-1/6"
             >
               <div
                 className={`h-12 w-[10.9375rem] ${index === 0 ? 'bg-primary' : 'bg-muted'} flex items-center gap-2 rounded-xl px-3 py-2`}
@@ -26,7 +26,6 @@ export function CarouselCollaborators() {
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-
                 <p
                   className={`text-sm font-semibold ${index === 0 ? 'text-foreground' : 'text-muted-foreground'}`}
                 >

@@ -12,6 +12,7 @@ import {
 import { cn } from '@/lib/utils'
 
 import { CarouselCollaborators } from './components/carousel-collaborators'
+import { CarouselCutsHair } from './components/carousel-cuts-hair'
 
 export function ScheduleCollaborators() {
   const [date, setDate] = useState<Date | undefined>(new Date())
@@ -47,6 +48,14 @@ export function ScheduleCollaborators() {
             </PopoverContent>
           </Popover>
         </div>
+
+        <h1 className="mt-4 text-2xl font-bold text-foreground">
+          Escolha o corte
+        </h1>
+        <div className="flex flex-col">
+          <CarouselCutsHair/>
+        </div>
+
         <h1 className="mt-4 text-2xl font-bold text-foreground">
           Escolha o horário
         </h1>
