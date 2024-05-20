@@ -1,8 +1,10 @@
 import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
+import { Calendar as CalendarIcon, X } from 'lucide-react'
 import { useState } from 'react'
 
+import { ptBR } from "date-fns/locale"
 import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { Calendar } from '@/components/ui/calendar'
 import {
   Popover,
@@ -16,6 +18,16 @@ import { CarouselCutsHair } from './components/carousel-cuts-hair'
 
 export function ScheduleCollaborators() {
   const [date, setDate] = useState<Date | undefined>(new Date())
+  const [serviceSelected, setServiceSelected] = useState<string[]>([])
+
+  function handleSelected(serviceName: string) {
+    if (serviceSelected.includes(serviceName)) {
+      setServiceSelected(serviceSelected.filter(service => service !== serviceName))
+    } else {
+      setServiceSelected(prevState => [...prevState, serviceName])
+    }
+  }
+
   return (
     <>
       <div className="flex flex-col gap-6">
@@ -43,6 +55,7 @@ export function ScheduleCollaborators() {
                 mode="single"
                 selected={date}
                 onSelect={setDate}
+                locale={ptBR}
                 className="w-[278px] rounded-md border"
               />
             </PopoverContent>
@@ -52,8 +65,14 @@ export function ScheduleCollaborators() {
         <h1 className="mt-4 text-2xl font-bold text-foreground">
           Escolha o corte
         </h1>
-        <div className="flex flex-col">
-          <CarouselCutsHair/>
+
+        <CarouselCutsHair setService={handleSelected} />
+        <div className="flex flex-wrap gap-2">
+          {serviceSelected && serviceSelected.map(service => (
+            <Badge key={service}>
+              {service}<X/>
+            </Badge>
+          ))}
         </div>
 
         <h1 className="mt-4 text-2xl font-bold text-foreground">

@@ -11,8 +11,8 @@ export function App() {
   return (
     <HelmetProvider>
       <AuthContextProvider>
-        <ThemeProvider storageKey="pizzashop-theme" defaultTheme="dark">
-          <Helmet titleTemplate="%s | pizza.shop" />
+        <ThemeProvider storageKey="barbershop-theme" defaultTheme="dark">
+          <Helmet titleTemplate="%s | barber.shop" />
           <Toaster richColors />
           <RouterProvider router={router} />
         </ThemeProvider>
