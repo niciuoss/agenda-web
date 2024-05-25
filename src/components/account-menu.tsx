@@ -1,5 +1,6 @@
+'use client'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/hooks/use-auth'
 
@@ -15,16 +16,17 @@ import {
 
 export function AccountMenu() {
   const { signOut } = useAuth()
-  const navigate = useNavigate()
-  // const { user } = props
+  const router = useRouter()
   const { user } = useAuth()
-  console.log(user)
 
   async function handleSignOut() {
-    signOut()
-    navigate('/sign-in')
+    try {
+      await signOut()
+      router.push('/sign-in')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
   }
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

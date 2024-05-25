@@ -1,9 +1,9 @@
 import { Cake, Clock8, Home, SquareGanttChart } from 'lucide-react'
+import Link from 'next/link'
 
-import { AccountMenu } from './account-menu.tsx'
-import { NavLink } from './nav-link.tsx'
-import { ThemeToggle } from './theme/theme-toggle.tsx'
-import { Separator } from './ui/separator.tsx'
+import { AccountMenu } from './account-menu'
+import { ThemeToggle } from './theme/theme-toggle'
+import { Separator } from './ui/separator'
 
 export function Header() {
   return (
@@ -13,18 +13,18 @@ export function Header() {
         <Separator orientation="vertical" className="h-6" />
 
         <nav className="flex items-center space-x-4 lg:space-x-6">
-          <NavLink to="/">
-            <Home className="h-4 w-4" />
+          <Link href="/" className="flex items-center justify-center">
+            <Home className="mr-2 h-4 w-4" />
             Home
-          </NavLink>
-          <NavLink to="/orders">
-            <SquareGanttChart className="h-4 w-4" />
+          </Link>
+          <Link href="/orders" className="flex items-center justify-center">
+            <SquareGanttChart className="mr-2 h-4 w-4" />
             Histórico
-          </NavLink>
-          <NavLink to="/schedule">
-            <Clock8 className="h-4 w-4" />
+          </Link>
+          <Link href="/schedules" className="flex items-center justify-center">
+            <Clock8 className="mr-2 h-4 w-4" />
             Agendamentos
-          </NavLink>
+          </Link>
         </nav>
 
         <div className="ml-auto flex items-center gap-2">
